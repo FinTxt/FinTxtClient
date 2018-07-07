@@ -16,6 +16,8 @@
 #' @importFrom httr http_error
 #' @importFrom httr add_headers
 #'
+#' @return List containing API response or error
+#'
 #' @export
 
 fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL) {
