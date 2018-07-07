@@ -7,8 +7,8 @@
 #' Retrieve historic or live news intensities
 #'
 #' @param endpoint API endpoint to use. Must be one of must be one of 'languages', 'live', 'historic'
-#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values
-#' @param ric RIC code for the company for which you want to query news intensity values
+#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.
+#' @param ric RIC code for the company for which you want to query news intensity values. Defaults to NULL.
 #' @param date Filter news intensity values by date. Defaults to NULL.
 #'
 #' @importFrom httr GET
@@ -18,13 +18,33 @@
 #'
 #' @export
 
-fintxt_client_get <- function(endpoint, language, ric, date = NULL) {
+fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL) {
 
   # Check if endpoint allowed
   if(!endpoint %in% c("languages", "live", "historic")) {
 
     stop("Endpoint must be one of 'languages', 'live', 'historic'")
 
+  }
+
+  # Check if params are character
+  if(is(endpoint)[1] == "character") {
+    stop("Endpoint must be a character ...")
+  }
+  if(!is.null(language)) {
+    if(is(language)[1] == "character") {
+      stop("Language must be a character ...")
+    }
+  }
+  if(!is.null(ric)) {
+    if(is(ric)[1] == "character") {
+      stop("RIC must be a character ...")
+    }
+  }
+  if(!is.null(date)) {
+    if(is(date)[1] == "character") {
+      stop("Date must be a character ...")
+    }
   }
 
   # Check if token supplied
