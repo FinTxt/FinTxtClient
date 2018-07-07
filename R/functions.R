@@ -28,21 +28,21 @@ fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL
   }
 
   # Check if params are character
-  if(is(endpoint)[1] == "character") {
+  if(is(endpoint)[1] != "character") {
     stop("Endpoint must be a character ...")
   }
   if(!is.null(language)) {
-    if(is(language)[1] == "character") {
+    if(is(language)[1] != "character") {
       stop("Language must be a character ...")
     }
   }
   if(!is.null(ric)) {
-    if(is(ric)[1] == "character") {
+    if(is(ric)[1] != "character") {
       stop("RIC must be a character ...")
     }
   }
   if(!is.null(date)) {
-    if(is(date)[1] == "character") {
+    if(is(date)[1] != "character") {
       stop("Date must be a character ...")
     }
   }

@@ -4,14 +4,14 @@
 \alias{fintxt_client_get}
 \title{Retrieve historic or live news intensities}
 \usage{
-fintxt_client_get(endpoint, language, ric, date = NULL)
+fintxt_client_get(endpoint, language = NULL, ric = NULL, date = NULL)
 }
 \arguments{
 \item{endpoint}{API endpoint to use. Must be one of must be one of 'languages', 'live', 'historic'}
 
-\item{language}{Filter news intensity values by language. See the '/languages' endpoint for allowed values}
+\item{language}{Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.}
 
-\item{ric}{RIC code for the company for which you want to query news intensity values}
+\item{ric}{RIC code for the company for which you want to query news intensity values. Defaults to NULL.}
 
 \item{date}{Filter news intensity values by date. Defaults to NULL.}
 }
