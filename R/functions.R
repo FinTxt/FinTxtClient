@@ -4,7 +4,21 @@
 #
 # --------------------------------------------------------------------------------
 
-fintxt_client_get <- function(endpoint, language, ric, date) {
+#' Retrieve historic or live news intensities
+#'
+#' @param endpoint API endpoint to use. Must be one of must be one of 'languages', 'live', 'historic'
+#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values
+#' @param ric RIC code for the company for which you want to query news intensity values
+#' @param date Filter news intensity values by date. Defaults to NULL.
+#'
+#' @importFrom httr GET
+#' @importFrom httr content
+#' @importFrom httr http_error
+#' @importFrom httr add_headers
+#'
+#' @export
+
+fintxt_client_get <- function(endpoint, language, ric, date = NULL) {
 
   # Check if endpoint allowed
   if(!endpoint %in% c("languages", "live", "historic")) {
