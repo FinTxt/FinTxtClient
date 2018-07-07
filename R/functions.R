@@ -73,15 +73,25 @@ fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL
 
   } else {
 
-    url <- paste0(url, "/", endpoint)
+    url <- paste0(url, endpoint)
 
   }
 
   # Call api
-  r <- httr::GET(
-    url = url,
-    httr::add_headers("API-TOKEN" = Sys.getenv("FINTXT_CLIENT_TOKEN"))
-  )
+  if(endpoint == "languages") {
+
+    r <- httr::GET(
+      url = url
+    )
+
+  } else {
+
+    r <- httr::GET(
+      url = url,
+      httr::add_headers("API-TOKEN" = Sys.getenv("FINTXT_CLIENT_TOKEN"))
+    )
+
+  }
 
   # If error, raise error
   if(httr::http_error(r)) {
