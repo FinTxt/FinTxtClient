@@ -109,6 +109,12 @@ fintxt_live_intensities <- function(language, ric) {
   }
   url <- paste0(url, "live/", language, "?ric=", ric)
 
+  # Call
+  r <- httr::GET(
+    url = url,
+    httr::add_headers("API-TOKEN" = Sys.getenv("FINTXT_CLIENT_TOKEN"))
+  )
+
   # If error, raise error
   if(httr::http_error(r)) {
 
