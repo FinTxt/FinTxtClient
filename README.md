@@ -17,5 +17,7 @@ After installing the package, use the following code to call the endpoints:
 ```r
 library(FinTxtClient)
 Sys.setenv("FINTXT_CLIENT_TOKEN" = "<yourtoken>")
-r <- fintxt_client_get("languages")
+r <- fintxt_get_languages()
 ```
+
+// TODO: update examples
