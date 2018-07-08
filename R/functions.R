@@ -4,9 +4,76 @@
 #
 # --------------------------------------------------------------------------------
 
-#' Retrieve historic or live news intensities
+#' Retrieve languages for which you can query news intensities
 #'
-#' @param endpoint API endpoint to use. Must be one of must be one of 'languages', 'live', 'historic'
+#' @importFrom httr GET
+#' @importFrom httr content
+#' @importFrom httr http_error
+#'
+#' @return list of languages
+#' @export
+
+fintxt_get_languages <- function() {
+
+  # Retrieve base url
+  url <- Sys.getenv("FINTXT_CLIENT_URL")
+
+  # Update endpoint
+  if(!substr(url, nchar(url), nchar(url)) == "/") {
+
+    url <- paste0(url, "/")
+
+  }
+  url <- paste0(url, "languages")
+
+  # Send GET request
+  r <- httr::GET(
+    url = url
+  )
+
+  # If error, raise error
+  if(httr::http_error(r)) {
+
+    # Get error
+    err <- httr::content(r)
+
+    stop("API returned error '", err$status, "': '", err$error, "'")
+
+  } else { # Return
+
+    httr::content(r)
+
+  }
+
+}
+
+#' Retrieve live news intensities
+#'
+#' Retrieve live news intensities for a language, a date and a company's \href{https://en.wikipedia.org/wiki/Reuters_Instrument_Code}{Reuters Instrument Code}
+#'
+#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.
+#' @param date Filter news intensity values by date. Defaults to NULL.
+#' @param ric RIC code for the company for which you want to query news intensity values. Defaults to NULL.
+#'
+#' @importFrom httr GET
+#' @importFrom httr content
+#' @importFrom httr http_error
+#' @importFrom httr add_headers
+#'
+#' @seealso See the documentation at <https://fintxt.github.io/documentation/index.html>
+#'
+#' @return List containing
+#'
+#' @export
+
+fintxt_live_intensities <- function() {
+
+
+
+}
+
+#' Retrieve live news intensities
+#'
 #' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.
 #' @param ric RIC code for the company for which you want to query news intensity values. Defaults to NULL.
 #' @param date Filter news intensity values by date. Defaults to NULL.
