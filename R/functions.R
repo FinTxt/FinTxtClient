@@ -11,6 +11,14 @@
 #' @importFrom httr http_error
 #'
 #' @return list of languages
+#'
+#' @examples
+#' \dontrun{
+#' # Call languages endpoint
+#' library(FinTxtClient)
+#' lang <- fintxt_get_languages()
+#' }
+#'
 #' @export
 
 fintxt_get_languages <- function() {
@@ -49,11 +57,10 @@ fintxt_get_languages <- function() {
 
 #' Retrieve live news intensities
 #'
-#' Retrieve live news intensities for a language, a date and a company's \href{https://en.wikipedia.org/wiki/Reuters_Instrument_Code}{Reuters Instrument Code}
+#' Retrieve live news intensities for a language and a company's \href{https://en.wikipedia.org/wiki/Reuters_Instrument_Code}{Reuters Instrument Code}. Note that you need to supply a valid api token.
 #'
-#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.
-#' @param date Filter news intensity values by date. Defaults to NULL.
-#' @param ric RIC code for the company for which you want to query news intensity values. Defaults to NULL.
+#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values.
+#' @param ric RIC code for the company for which you want to query news intensity values.
 #'
 #' @importFrom httr GET
 #' @importFrom httr content
@@ -62,58 +69,28 @@ fintxt_get_languages <- function() {
 #'
 #' @seealso See the documentation at <https://fintxt.github.io/documentation/index.html>
 #'
-#' @return List containing
+#' @return List containing API results
+#'
+#' @examples
+#' \dontrun{
+#' # Call languages endpoint
+#' library(FinTxtClient)
+#' r <- fintxt_live_intensities("english", "TRI.TO")
+#' }
 #'
 #' @export
 
-fintxt_live_intensities <- function() {
+fintxt_live_intensities <- function(language, ric) {
 
+  # Date allowed
+  free <- Sys.Date() - 30
 
-
-}
-
-#' Retrieve live news intensities
-#'
-#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values. Defaults to NULL.
-#' @param ric RIC code for the company for which you want to query news intensity values. Defaults to NULL.
-#' @param date Filter news intensity values by date. Defaults to NULL.
-#'
-#' @importFrom httr GET
-#' @importFrom httr content
-#' @importFrom httr http_error
-#' @importFrom httr add_headers
-#'
-#' @return List containing API response or error
-#'
-#' @export
-
-fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL) {
-
-  # Check if endpoint allowed
-  if(!endpoint %in% c("languages", "live", "historic")) {
-
-    stop("Endpoint must be one of 'languages', 'live', 'historic'")
-
+  # Check parameters
+  if(is(language)[1] != "character") {
+    stop("Language must be a character ...")
   }
-
-  # Check if params are character
-  if(is(endpoint)[1] != "character") {
-    stop("Endpoint must be a character ...")
-  }
-  if(!is.null(language)) {
-    if(is(language)[1] != "character") {
-      stop("Language must be a character ...")
-    }
-  }
-  if(!is.null(ric)) {
-    if(is(ric)[1] != "character") {
-      stop("RIC must be a character ...")
-    }
-  }
-  if(!is.null(date)) {
-    if(is(date)[1] != "character") {
-      stop("Date must be a character ...")
-    }
+  if(is(ric)[1] != "character") {
+    stop("RIC must be a character ...")
   }
 
   # Check if token supplied
@@ -123,41 +100,137 @@ fintxt_client_get <- function(endpoint, language = NULL, ric = NULL, date = NULL
 
   }
 
+  # Retrieve url & paste endpoint
   url <- Sys.getenv("FINTXT_CLIENT_URL")
-
-  # Paste endpoint
   if(!substr(url, nchar(url), nchar(url)) == "/") {
 
     url <- paste0(url, "/")
 
   }
+  url <- paste0(url, "live/", language, "?ric=", ric)
 
-  if(endpoint == "live") {
+  # If error, raise error
+  if(httr::http_error(r)) {
 
-    url <- paste0(url, endpoint, "/", language, "?ric=", ric)
+    # Get error
+    err <- httr::content(r)
 
-  } else if(endpoint == "historic") {
+    stop("API returned error '", err$status, "': '", err$error, "'")
 
-    url <- paste0(url, endpoint, "/", language, "/", date, "?ric=", ric)
+  } else { # Return
 
-  } else {
-
-    url <- paste0(url, endpoint)
+    httr::content(r)
 
   }
 
-  # Call api
-  if(endpoint == "languages") {
+}
+
+#' Retrieve historic news intensities
+#'
+#' Retrieve live news intensities for a language, a date and a company's \href{https://en.wikipedia.org/wiki/Reuters_Instrument_Code}{Reuters Instrument Code}. Note that you need to supply a valid api token.
+#'
+#' @param language Filter news intensity values by language. See the '/languages' endpoint for allowed values.
+#' @param date Filter news intensity values by date.
+#' @param ric RIC code for the company for which you want to query news intensity values.
+#'
+#' @importFrom httr GET
+#' @importFrom httr content
+#' @importFrom httr http_error
+#' @importFrom httr add_headers
+#'
+#' @seealso See the documentation at <https://fintxt.github.io/documentation/index.html>
+#'
+#' @return List containing API results
+#'
+#' @examples
+#' \dontrun{
+#' # Call languages endpoint
+#' library(FinTxtClient)
+#' r <- fintxt_historic_intensities("english", Sys.Date()-40, "TRI.TO")
+#' }
+#'
+#' @export
+
+fintxt_historic_intensities <- function(language, date, ric) {
+
+  # Date allowed
+  free <- Sys.Date() - 30
+
+  # Check parameters
+  if(is(language)[1] != "character") {
+    stop("Language must be a character ...")
+  }
+  if(is(ric)[1] != "character") {
+    stop("RIC must be a character ...")
+  }
+  if(is(date)[1] != "character") {
+
+    stop("Date must be a character ...")
+
+  } else {
+
+    # Check if in right format
+    date_formt <- as.Date(date, format="%d-%m-%Y")
+    if(is.na(date_formt)) {
+
+      stop("Date supplied is not in the required format. Please pass dates as '<day>-<month>-<year>'")
+
+    }
+
+    # Check if date is allowed
+    if(date_formt < as.Date("18-03-2016", format="%d-%m-%Y")) {
+
+      stop("Date out of range")
+
+    } else if (date_formt > (Sys.Date() - 1)) {
+
+      stop("Date out of range")
+
+    } else {
+
+      # If date > today - 30 days, then require token
+      if(date_formt > (Sys.Date() - 30)) {
+
+        # Check if token supplied
+        if(Sys.getenv("FINTXT_CLIENT_TOKEN") == "") {
+
+          stop("Calling this endpoint with a date later than 30 days ago requires an API token. No API token supplied. Set your token using 'Sys.setenv('FINTXT_CLIENT_TOKEN'='<YOURTOKEN>')'")
+
+        }
+
+        require_token <- TRUE
+
+      } else {
+
+        require_token <- FALSE
+
+      }
+
+    }
+
+  }
+
+  # Retrieve url & paste endpoint
+  url <- Sys.getenv("FINTXT_CLIENT_URL")
+  if(!substr(url, nchar(url), nchar(url)) == "/") {
+
+    url <- paste0(url, "/")
+
+  }
+  url <- paste0(url, "historic/", language, "/", date, "?ric=", ric)
+
+  # Send request
+  if(require_token) {
 
     r <- httr::GET(
-      url = url
+      url = url,
+      httr::add_headers("API-TOKEN" = Sys.getenv("FINTXT_CLIENT_TOKEN"))
     )
 
   } else {
 
     r <- httr::GET(
-      url = url,
-      httr::add_headers("API-TOKEN" = Sys.getenv("FINTXT_CLIENT_TOKEN"))
+      url = url
     )
 
   }
