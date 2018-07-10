@@ -9,7 +9,8 @@ Description: This package contains several simple functions to interact
     with the news intensity API created by FinTxt. View the docs at
     <url>
 Imports:
-    httr
+    httr,
+    jsonlite
 Depends:
     utils
 License: GPL-3
