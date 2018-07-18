@@ -13,6 +13,8 @@ fintxt_historic_intensities_portfolio(type = c("companies", "commodities"),
 
 \item{language}{Filter news intensity values by language. See the '/languages' endpoint for allowed values.}
 
+\item{date}{Filter news intensity values by date.}
+
 \item{identifiers}{RIC codes for the companies for which you want to query news intensity values or names of commodities for which you want to query news intensity values. See documentation for supported commodities. Note that you cannot mix companies and commodities}
 
 \item{weights}{Weight of each company/commodity in your portfolio in decimal format. Should sum to 1, but the API will still return news intensities if this is not the case. See example section.}

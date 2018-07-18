@@ -9,7 +9,7 @@
 
   # Set options for retinaSDK python module
   if(Sys.getenv("FINTXT_CLIENT_URL") == "") {
-    Sys.setenv("FINTXT_CLIENT_URL" = "http://127.0.01:8000")
+    Sys.setenv("FINTXT_CLIENT_URL" = "http://api.fintxt.io/rest")
   }
 
 }
