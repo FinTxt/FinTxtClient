@@ -382,7 +382,7 @@ fintxt_historic_intensities_portfolio <- function(type = c("companies", "commodi
   # POST
   r <- httr::POST(url = url,
                   body = body_json,
-                  httr::add_headers("API_TOKEN"=Sys.getenv("FINTXT_CLIENT_TOKEN")))
+                  httr::add_headers("API-TOKEN"=Sys.getenv("FINTXT_CLIENT_TOKEN")))
 
   # Return
   if(httr::http_error(r)) {
@@ -497,7 +497,7 @@ fintxt_live_intensities_portfolio <- function(type = c("companies", "commodities
   # POST
   r <- httr::POST(url = url,
                   body = body_json,
-                  httr::add_headers("API_TOKEN"=Sys.getenv("FINTXT_CLIENT_TOKEN")))
+                  httr::add_headers("API-TOKEN"=Sys.getenv("FINTXT_CLIENT_TOKEN")))
 
   # Return
   if(httr::http_error(r)) {
