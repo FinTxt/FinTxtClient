@@ -5,13 +5,7 @@ language: R
 sudo: false
 cache: packages
 
-r_packages:
-  - covr
-
-after_success:
-  - Rscript -e 'library(covr); codecov()'
-
 addons:
   apt:
     packages:
-- libxml2-dev
+      - libxml2-dev
