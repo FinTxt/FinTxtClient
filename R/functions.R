@@ -67,6 +67,7 @@ fintxt_get_languages <- function() {
 #' @importFrom httr content
 #' @importFrom httr http_error
 #' @importFrom httr add_headers
+#' @importFrom methods is
 #'
 #' @seealso See the documentation at <https://fintxt.github.io/documentation/index.html>
 #'
@@ -150,6 +151,7 @@ fintxt_live_intensities_one <- function(type = c("companies", "commodities"),
 #' @importFrom httr content
 #' @importFrom httr http_error
 #' @importFrom httr add_headers
+#' @importFrom methods is
 #'
 #' @seealso See the documentation at <https://fintxt.github.io/documentation/index.html>
 #'

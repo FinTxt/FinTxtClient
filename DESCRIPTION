@@ -5,12 +5,13 @@ Version: 0.1.0
 Author: Jasper Ginn
 Authors@R: person("Jasper", "Ginn", role = c("aut", "cre"), email = "jasperginn@gmail.com")
 Maintainer: Jasper Ginn <jasperginn@gmail.com>
-Description: This package contains several simple functions to interact 
+Description: This package contains several simple functions to interact
     with the news intensity API created by FinTxt. View the docs at
     <url>
 Imports:
     httr,
-    jsonlite
+    jsonlite,
+    methods
 Depends:
     utils
 License: GPL-3
