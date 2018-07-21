@@ -10,7 +10,7 @@ test_that("API returns errors on bad requests", {
                "Calling this endpoint with a date")
 
   expect_error(fintxt_historic_intensities_one("companies", "chinese", format(Sys.Date() - 35, "%d-%m-%Y"), q),
-               "'arg' should be one of \"total\"")
+               "'arg' should be one of")
 
   Sys.setenv('FINTXT_CLIENT_TOKEN'='TOKTOKTOK')
 
